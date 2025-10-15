@@ -1,1 +1,1 @@
-web: python -m biisal
+worker: python bot.py
