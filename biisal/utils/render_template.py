@@ -25,7 +25,7 @@ async def render_page(id, secure_hash, stream=False):
     tag = file_data.mime_type.split("/")[0].strip()
     file_size = humanbytes(file_data.file_size)
     if stream:
-        template_file = "biisal/template/watch.html"
+        template_file = "biisal/template/req.html"
     else:
         template_file = "biisal/template/dl.html"
         async with aiohttp.ClientSession() as s:
