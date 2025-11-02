@@ -51,7 +51,7 @@ async def stream_handler(request: web.Request):
         else:
             id = int(re.search(r"(\d+)(?:\/\S+)?", path).group(1))
             secure_hash = request.rel_url.query.get("hash")
-        return web.Response(text=await render_page(id, secure_hash), content_type='text/html')
+        return web.Response(text=await render_page(id, secure_hash, stream=True), content_type='text/html')
     except InvalidHash as e:
         raise web.HTTPForbidden(text=e.message)
     except FIleNotFound as e:
@@ -142,7 +142,7 @@ async def media_streamer(request: web.Request, id: int, secure_hash: str):
 
     mime_type = file_id.mime_type
     file_name = file_id.file_name
-    disposition = "attachment"
+    disposition = "inline"
 
     if mime_type:
         if not file_name:

@@ -9,7 +9,7 @@ import logging
 import aiohttp
 import jinja2
 
-async def render_page(id, secure_hash, src=None):
+async def render_page(id, secure_hash, stream=False):
     file = await StreamBot.get_messages(int(Var.BIN_CHANNEL), int(id))
     file_data = await get_file_ids(StreamBot, int(Var.BIN_CHANNEL), int(id))
     if file_data.unique_id[:6] != secure_hash:
@@ -24,7 +24,7 @@ async def render_page(id, secure_hash, src=None):
 
     tag = file_data.mime_type.split("/")[0].strip()
     file_size = humanbytes(file_data.file_size)
-    if tag in ["video", "audio"]:
+    if stream:
         template_file = "biisal/template/req.html"
     else:
         template_file = "biisal/template/dl.html"
