@@ -87,7 +87,7 @@ async def stream_handler(request: web.Request):
 class_cache = {}
 
 async def media_streamer(request: web.Request, id: int, secure_hash: str):
-    range_header = request.headers.get("Range", 0)
+    range_header = request.headers.get("Range")
     
     index = min(work_loads, key=work_loads.get)
     faster_client = multi_clients[index]
@@ -113,12 +113,26 @@ async def media_streamer(request: web.Request, id: int, secure_hash: str):
     file_size = file_id.file_size
 
     if range_header:
-        from_bytes, until_bytes = range_header.replace("bytes=", "").split("-")
-        from_bytes = int(from_bytes)
-        until_bytes = int(until_bytes) if until_bytes else file_size - 1
+        try:
+            http_range = request.get_http_range(file_size)
+        except ValueError:
+            return web.Response(
+                status=416,
+                body="416: Range not satisfiable",
+                headers={"Content-Range": f"bytes */{file_size}"},
+            )
+
+        if http_range is None:
+            return web.Response(
+                status=416,
+                body="416: Range not satisfiable",
+                headers={"Content-Range": f"bytes */{file_size}"},
+            )
+        from_bytes = http_range.start
+        until_bytes = http_range.stop - 1
     else:
-        from_bytes = request.http_range.start or 0
-        until_bytes = (request.http_range.stop or file_size) - 1
+        from_bytes = 0
+        until_bytes = file_size - 1
 
     if (until_bytes > file_size) or (from_bytes < 0) or (until_bytes < from_bytes):
         return web.Response(
