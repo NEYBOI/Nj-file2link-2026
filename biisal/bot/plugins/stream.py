@@ -29,7 +29,7 @@ msg_text ="""<b><u>‣ 𝗬𝗼𝘂𝗿 𝗟𝗶𝗻𝗸 𝗚𝗲𝗻𝗲𝗿�
 
 <b>📥 Dᴏᴡɴʟᴏᴀᴅ :</b> <i>{}</i>\n\n<b> 🖥 Wᴀᴛᴄʜ Oɴʟɪɴᴇ:</b> <i>{}</i>\n<b>
 
-‣ Gᴇᴛ <a href="https://t.me/MovierequestgroupNj">Mᴏʀᴇ Mᴏᴠɪᴇ Fɪʟᴇs</a></b> 🍿"""
+‣ Gᴇᴛ <a href="https://t.me/MovieRequestGroup_Nj">Mᴏʀᴇ Mᴏᴠɪᴇ Fɪʟᴇs</a></b> 🍿"""
 
 
 @StreamBot.on_message((filters.regex("login🔑") | filters.command("login")) , group=4)
