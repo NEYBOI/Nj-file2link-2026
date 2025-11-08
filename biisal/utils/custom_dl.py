@@ -214,10 +214,8 @@ class ByteStreamer:
                             location=location, offset=offset, limit=chunk_size
                         ),
                     )
-        except (TimeoutError, AttributeError):
-            pass
         finally:
-            logging.debug("Finished yielding file with {current_part} parts.")
+            logging.debug(f"Finished yielding file with {current_part} parts.")
             work_loads[index] -= 1
 
     
